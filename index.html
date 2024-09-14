@@ -1,7 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Sleek Web App</title>
+    <title>Interactive Web App</title>
 
     <!-- App Icon for iOS Home Screen -->
     <link rel="apple-touch-icon" href="icon.png">
@@ -9,10 +11,10 @@
     <!-- iOS Home Screen Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My Web App">
+    <meta name="apple-mobile-web-app-title" content="Interactive Web App">
 
     <style>
-        /* Add the rest of your CSS here */
+        /* Reset some default styles */
         * {
             margin: 0;
             padding: 0;
@@ -29,6 +31,7 @@
             color: #fff;
             padding: 20px;
             text-align: center;
+            transition: background-color 0.5s ease;
         }
 
         .container {
@@ -62,6 +65,7 @@
             text-decoration: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, color 0.3s ease;
+            cursor: pointer;
         }
 
         .btn:hover {
@@ -80,3 +84,38 @@
         }
     </style>
 </head>
+<body>
+    <div class="container">
+        <h1 id="headerText">Hello!</h1>
+        <p id="subText">Click the button below to see some magic.</p>
+        <button class="btn" id="magicButton">Do Magic</button>
+    </div>
+
+    <script>
+        // JavaScript to add interactivity
+
+        // Get elements by their ID
+        const magicButton = document.getElementById('magicButton');
+        const headerText = document.getElementById('headerText');
+        const subText = document.getElementById('subText');
+        const body = document.body;
+
+        // Function to change the text and background color
+        function doMagic() {
+            // Array of colors to cycle through
+            const colors = ['#f39c12', '#e74c3c', '#9b59b6', '#3498db', '#2ecc71'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            // Change text
+            headerText.textContent = 'You made magic happen!';
+            subText.textContent = 'The background color has changed. Try again!';
+
+            // Change the background color
+            body.style.background = randomColor;
+        }
+
+        // Add event listener to the button
+        magicButton.addEventListener('click', doMagic);
+    </script>
+</body>
+</html>
