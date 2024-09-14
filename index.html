@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Web App</title>
+    <title>Hotel Sonne Parking Reservation</title>
 
     <!-- App Icon for iOS Home Screen -->
     <link rel="apple-touch-icon" href="icon.png">
@@ -11,10 +11,9 @@
     <!-- iOS Home Screen Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Interactive Web App">
+    <meta name="apple-mobile-web-app-title" content="Parking Reservation">
 
     <style>
-        /* Reset some default styles */
         * {
             margin: 0;
             padding: 0;
@@ -44,19 +43,32 @@
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
             font-weight: bold;
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.6;
+        form {
+            display: flex;
+            flex-direction: column;
         }
 
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
+        label {
+            text-align: left;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        input, select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        button {
             padding: 12px 24px;
             background-color: #fff;
             color: #764ba2;
@@ -68,17 +80,23 @@
             cursor: pointer;
         }
 
-        .btn:hover {
+        button:hover {
             background-color: #764ba2;
             color: #fff;
         }
 
-        /* Ensure it looks good on iPhone */
+        .btn-retrieve {
+            background-color: #3498db;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        /* Mobile responsive */
         @media only screen and (max-width: 600px) {
             h1 {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
-            p {
+            label, input {
                 font-size: 1rem;
             }
         }
@@ -86,36 +104,95 @@
 </head>
 <body>
     <div class="container">
-        <h1 id="headerText">Hello!</h1>
-        <p id="subText">Click the button below to see some magic.</p>
-        <button class="btn" id="magicButton">Do Magic</button>
+        <h1>Parking Reservation</h1>
+        <form id="reservationForm">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" placeholder="Enter your full name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+            <label for="checkin">Check-in Date</label>
+            <input type="date" id="checkin" required>
+
+            <label for="checkout">Check-out Date</label>
+            <input type="date" id="checkout" required>
+
+            <label for="carModel">Car Model</label>
+            <input type="text" id="carModel" placeholder="Enter your car model" required>
+
+            <label for="carSize">Car Size</label>
+            <select id="carSize">
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+            </select>
+
+            <label for="licensePlate">License Plate</label>
+            <input type="text" id="licensePlate" placeholder="Enter your license plate" required>
+
+            <button type="submit">Reserve Spot</button>
+        </form>
+
+        <button class="btn-retrieve" id="retrieveReservation">Retrieve Reservation</button>
     </div>
 
     <script>
-        // JavaScript to add interactivity
+        // JavaScript to handle form submission and retrieve reservation data
 
-        // Get elements by their ID
-        const magicButton = document.getElementById('magicButton');
-        const headerText = document.getElementById('headerText');
-        const subText = document.getElementById('subText');
-        const body = document.body;
+        const reservationForm = document.getElementById('reservationForm');
+        const retrieveButton = document.getElementById('retrieveReservation');
 
-        // Function to change the text and background color
-        function doMagic() {
-            // Array of colors to cycle through
-            const colors = ['#f39c12', '#e74c3c', '#9b59b6', '#3498db', '#2ecc71'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        reservationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
 
-            // Change text
-            headerText.textContent = 'You made magic happen!';
-            subText.textContent = 'The background color has changed. Try again!';
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const carModel = document.getElementById('carModel').value;
+            const carSize = document.getElementById('carSize').value;
+            const licensePlate = document.getElementById('licensePlate').value;
 
-            // Change the background color
-            body.style.background = randomColor;
-        }
+            // Create a reservation object
+            const reservation = {
+                name,
+                email,
+                phone,
+                checkin,
+                checkout,
+                carModel,
+                carSize,
+                licensePlate
+            };
 
-        // Add event listener to the button
-        magicButton.addEventListener('click', doMagic);
+            // Store the reservation in localStorage
+            localStorage.setItem(email, JSON.stringify(reservation));
+            alert('Parking reservation successful!');
+            reservationForm.reset();
+        });
+
+        retrieveButton.addEventListener('click', function() {
+            const email = prompt('Enter your email to retrieve your reservation:');
+            const reservation = JSON.parse(localStorage.getItem(email));
+
+            if (reservation) {
+                alert(`Reservation Details:
+Name: ${reservation.name}
+Phone: ${reservation.phone}
+Check-in: ${reservation.checkin}
+Check-out: ${reservation.checkout}
+Car Model: ${reservation.carModel}
+Car Size: ${reservation.carSize}
+License Plate: ${reservation.licensePlate}`);
+            } else {
+                alert('No reservation found with this email.');
+            }
+        });
     </script>
 </body>
 </html>
